@@ -1,14 +1,26 @@
 {
-  "name": "matchbook",
+
+  "name": "puppet-sample",
   "version": "1.0.0",
-  "description": "",
+  "description": "Sample service using Puppeteer and serverless chrome with bots",
   "main": "index.js",
   "scripts": {
+    "p": "git push origin master",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Nani",
+  "keywords": [
+    "Puppeteer",
+    "Nodejs",
+    "Serverless",
+    "Chrome"
+  ],
+  "author": "",
   "license": "MIT",
   "dependencies": {
-    "puppeteer": "1.0.0"
+    "lodash": "^4.17.5", 
+    "nodemailer": "^4.6.3",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "puppeteer": "0.13.0"
+
   }
 }
