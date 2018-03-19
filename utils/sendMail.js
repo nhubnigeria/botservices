@@ -16,9 +16,9 @@ const
 const
   sgtOptions = {
     auth: {
-      api_user: 'apikey',
-      api_key: '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',
-      email: 'ernest.offiong@gmail.com'
+      api_user: process.env.SendGridUsername,
+      api_key: process.env.SendGridPassword,
+      email: process.env.Email
     }
   },
   mailer = nodemailer.createTransport(sgTransport(sgtOptions));

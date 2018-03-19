@@ -1,4 +1,5 @@
 {
+
   "name": "puppet-sample",
   "version": "1.0.0",
   "description": "Sample service using Puppeteer and serverless chrome with bots",
@@ -19,6 +20,6 @@
     "lodash": "^4.17.5", 
     "nodemailer": "^4.6.3",
     "nodemailer-sendgrid-transport": "^0.2.0",
-    "puppeteer": "0.13.0"
+
   }
 }
