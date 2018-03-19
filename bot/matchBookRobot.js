@@ -12,7 +12,7 @@ const puppeteer = require('puppeteer');
 
 // module variables
 const
-	EVENT_URL = 'https://matchbook.com/events/horse-racing/ireland/limerick/752494909770014/live-betting/14-00-limerick',
+	EVENT_URL = process.env.EVENT_URL,
 	SELECTIONS_CONTAINER_SELECTOR = 'div.mb-market__runners',
 	MATCHED_AMOUNT_SELECTOR = '.mb-event-header__volume > span:nth-child(2)';
 
@@ -39,7 +39,7 @@ async function bot() {
 		timeout: 180000
 	});
 	// allow 'page' instance to output any calls to browser log to process obj
-	page.on('console', data => console.log(data.text));
+	page.on('console', data => console.log(data.text()));
 	// bind to races container and listen for updates to , bets etc
 	await page.$eval(SELECTIONS_CONTAINER_SELECTOR,
 		(target, MATCHED_AMOUNT_SELECTOR) => {

@@ -7,7 +7,7 @@ const P = require('puppeteer');
 
 // module variables
 const
-    EVENT_URL = 'https://www.betdaq.com/exchange/horse-racing/uk-racing/lingfield-(19th-march-2018)/14-20-lingfield/4782279',
+    EVENT_URL = process.env.EVENT_URL,
     SELECTIONS_CONTAINER_SELECTOR = 'table.dataTable.marketViewSelections',
     MATCHED_AMOUNT_SELECTOR = 'span.gep-matchedamount';
 
@@ -34,10 +34,14 @@ async function bot() {
     await page.reload();
     // ensure race container selector available
     const frame = await page.frames().find(f => f.name() === 'mainFrame');
+
+    await page.waitFor(30 * 1000);
+
+
     await frame.waitForSelector(SELECTIONS_CONTAINER_SELECTOR, {
         timeout: 180000
     });
-    page.on('console', data => console.log(data.text))
+    page.on('console', data => console.log(data.text()))
     // bind to races container and lsiten for updates to , bets etc
     await frame.$eval(SELECTIONS_CONTAINER_SELECTOR,
         (target, MATCHED_AMOUNT_SELECTOR) => {
