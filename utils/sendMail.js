@@ -18,7 +18,6 @@ const
     auth: {
       api_user: process.env.SendGridUsername,
       api_key: process.env.SendGridPassword,
-      email: process.env.Email
     }
   },
   mailer = nodemailer.createTransport(sgTransport(sgtOptions));
@@ -36,10 +35,10 @@ module.exports = (json, report)=> {
   };
 
   const msg = {
-    to: email,
+    to: process.env.Email,
     from: 'report@botservice.com',
     subject: report,
-    html: `<div><p>Hello ${email},</p><p>${report}</p>
+    html: `<div><p>Hello ${process.env.Email},</p><p>${report}</p>
             View the data below <br><ul>${msgDisp()}</ul>
  
     </div>`
