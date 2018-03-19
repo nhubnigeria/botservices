@@ -48,7 +48,7 @@ async function bot() {
   await frame.waitForSelector(SELECTIONS_CONTAINER_SELECTOR, {
     timeout: 180000
   });
-  page.on('console', data => console.log(data.text))
+  page.on('console', data => console.log(data.text()))
   // bind to races container and lsiten for updates to , bets etc
   await frame.$eval(SELECTIONS_CONTAINER_SELECTOR,
     (target, MATCHED_AMOUNT_SELECTOR) => {
