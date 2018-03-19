@@ -128,7 +128,7 @@ async function bot() {
                             let timestamp = new Date();
                             timestamp = timestamp.toISOString();
                             let matchedAmount = document.querySelector(MATCHED_AMOUNT_SELECTOR).innerText;
-                            // matchedAmount = Number(matchedAmount.replace(/\D/g, ''));
+                             matchedAmount = Number(matchedAmount.replace(/\D/g, ''));
                             const data = {
                                 betType,
                                 matchedAmount,
