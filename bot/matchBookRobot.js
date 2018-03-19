@@ -39,7 +39,7 @@ async function bot() {
 		timeout: 180000
 	});
 	// allow 'page' instance to output any calls to browser log to process obj
-	page.on('console', data => console.log(data.text));
+	page.on('console', data => console.log(data.text()));
 	// bind to races container and listen for updates to , bets etc
 	await page.$eval(SELECTIONS_CONTAINER_SELECTOR,
 		(target, MATCHED_AMOUNT_SELECTOR) => {
