@@ -82,8 +82,8 @@ async function bot() {
 
             };
             const output = JSON.stringify(data);
-            // sendMail(output, msg)
-            console.log(output);
+            sendMail(output, msg)
+            // console.log(output);
           } else {
             // create an object for them
             let allContent = [
@@ -104,7 +104,7 @@ async function bot() {
             // create msg
             const msg = `Some Elements returned with False data`;
             // call mail service
-            // sendMail(output, msg)
+            sendMail(output, msg)
         }
         });
       })
