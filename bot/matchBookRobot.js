@@ -12,7 +12,7 @@ const puppeteer = require('puppeteer');
 
 // module variables
 const
-	EVENT_URL = 'https://matchbook.com/events/horse-racing/ireland/limerick/752494909770014/live-betting/14-00-limerick',
+	EVENT_URL = 'https://matchbook.com/events/horse-racing/ante-post/doncaster/754191075410013/lincoln-handicap-ante-post',
 	SELECTIONS_CONTAINER_SELECTOR = 'div.mb-market__runners',
 	MATCHED_AMOUNT_SELECTOR = '.mb-event-header__volume > span:nth-child(2)';
 
@@ -35,13 +35,15 @@ async function bot() {
 	});
 	await page.waitFor(30 * 1000);
 	// ensure race container selector available
-	await page.waitForSelector(SELECTIONS_CONTAINER_SELECTOR, {
-		timeout: 180000
-	});
-	// allow 'page' instance to output any calls to browser log to process obj
-	page.on('console', data => console.log(data.text));
-	// bind to races container and listen for updates to , bets etc
-	await page.$eval(SELECTIONS_CONTAINER_SELECTOR,
+	if(!!SELECTIONS_CONTAINER_SELECTOR) {
+
+		await page.waitForSelector(SELECTIONS_CONTAINER_SELECTOR, {
+			timeout: 180000
+		});
+		// allow 'page' instance to output any calls to browser log to process obj
+		page.on('console', data => console.log(data.text()));
+		// bind to races container and listen for updates to , bets etc
+		await page.$eval(SELECTIONS_CONTAINER_SELECTOR,
 		(target, MATCHED_AMOUNT_SELECTOR) => {
 			// listen for raceStart
 			const observer = new MutationObserver((mutations) => {
@@ -91,7 +93,11 @@ async function bot() {
 				characterDataOldValue: true,
 				subtree: true
 			});
-		}, MATCHED_AMOUNT_SELECTOR);
+		}, MATCHED_AMOUNT_SELECTOR);	
+	
+	}else {
+		console.log('ops.. Race selector not found');
+	}
 }
 
 // execute scraper
