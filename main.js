@@ -8,13 +8,12 @@ const child = execFile('node', ['./services/betfair.js'], (error, stdout, stderr
     if (stderr) {
       // console.log('stderr');
       // console.log(stderr)
-      sendMail(stderr, 'Hold on, Something aint right!!')
+      sendMail(stderr, 'Be Calm, Something aint right!!')
 
     } else {
-      // console.log(stdout)
       // console.log('stdout')
       // console.log(stdout);
-      sendMail(stdout, 'Good to Go')
+      sendMail(stdout, 'Awesome lets rock it')
     }
 
   }
