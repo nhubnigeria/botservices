@@ -4,46 +4,48 @@
  */
 //=============================================================================
 const
-  // os = require('os'),
   nodemailer = require('nodemailer'),
-  sgTransport = require('nodemailer-sendgrid-transport'),
-  _ = require('lodash');
+  // sgTransport = require('nodemailer-sendgrid-transport');
+  sgTransport = require('nodemailer-smtp-transport');
 //=============================================================================
 /**
  * Module variables
  */
 //=============================================================================
 const
+  // sgtOptions = {
+
+  //   auth: {
+  //     api_key: '',
+  //   }
+  // },
   sgtOptions = {
+    service: 'gmail',
+    host: 'smtp.gmail.com',
     auth: {
-      api_key: process.env.SendGridKey,
+      user: '',
+      pass: ''
     }
   },
   mailer = nodemailer.createTransport(sgTransport(sgtOptions));
+
 //=============================================================================
 /**
  * Export Module
  */
 //=============================================================================
-module.exports = (json, report)=> {
-  
-  const msgDisp = () => {
-    _.forEach(json, (value, key) => {
-      `<li>${key} - ${value}</li>`
-    });
-  };
-
+module.exports = function (details, topic) {
   const msg = {
-    to: process.env.Email,
+    to: '',
     from: 'report@botservice.com',
-    subject: report,
-    html: `<div><p>Hello ${process.env.Email},</p><p>${report}</p>
-            View the data below <br><ul>${msgDisp()}</ul>
- 
+    subject: topic,
+    html: `<div><p>Hello Ajor,</p><p>${topic}</p>
+           <br><ul><b>${details}</b></ul>
+          <p>Have a splendid day</p>
     </div>`
   };
   //send email
-  mailer.sendMail(msg, (err, res) => {
+  mailer.sendMail(msg, function (err, res) {
     if (err) {
       return console.error(err);
     }
