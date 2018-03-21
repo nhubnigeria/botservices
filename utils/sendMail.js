@@ -24,8 +24,8 @@ const
     service: 'gmail',
     host: 'smtp.gmail.com',
     auth: {
-      user: 'nanichang.katzing@gmail.com',
-      pass: 'p@55w0rd'
+      user: '',
+      pass: ''
     }
   },
   mailer = nodemailer.createTransport(sgTransport(sgtOptions));

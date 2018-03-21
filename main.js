@@ -2,7 +2,7 @@ const { execFile } = require('child_process');
 const sendMail = require('./utils/sendMail.js');
 
 
-const child = execFile('node', ['./services/betfair.js'], (error, stdout, stderr) => {
+const child = execFile('node', ['./services/matchbook.js'], (error, stdout, stderr) => {
   if (error) { throw error; }
   else {
     if (stderr) {

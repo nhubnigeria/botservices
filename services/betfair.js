@@ -15,7 +15,7 @@ const
 async function bot() {
   // instantiate browser
   const browser = await P.launch({
-    headless: false
+    headless: true
   });
   // create blank page
   const page = await browser.newPage();
