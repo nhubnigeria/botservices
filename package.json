@@ -18,6 +18,7 @@
     "lodash": "^4.17.5",
     "nodemailer": "^4.6.3",
     "nodemailer-sendgrid-transport": "^0.2.0",
+    "nodemailer-smtp-transport": "^2.7.4",
     "puppeteer": "1.0.0"
   }
 }

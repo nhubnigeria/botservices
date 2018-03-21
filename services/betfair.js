@@ -8,14 +8,14 @@ const P = require('puppeteer');
 
 // module variables
 const
-  EVENT_URL = process.env.EVENT_URL,
+  EVENT_URL = 'https://www.betfair.com/exchange/plus/horse-racing/market/1.141534034',
   SELECTIONS_CONTAINER_SELECTOR = 'div.main-mv-runners-list-wrapper',
   MATCHED_AMOUNT_SELECTOR = '#main-wrapper > div > div.scrollable-panes-height-taker > div > div.page-content.nested-scrollable-pane-parent > div > div.bf-col-xxl-17-24.bf-col-xl-16-24.bf-col-lg-16-24.bf-col-md-15-24.bf-col-sm-14-24.bf-col-14-24.center-column.bfMarketSettingsSpace.bf-module-loading.nested-scrollable-pane-parent > div.scrollable-panes-height-taker.height-taker-helper > div > div.bf-row.main-mv-container > div > bf-main-market > bf-main-marketview > div > div.mv-sticky-header > bf-marketview-header-wrapper > div > div > mv-header > div > div > div.mv-secondary-section > div > div > span.total-matched';
 
 async function bot() {
   // instantiate browser
   const browser = await P.launch({
-    headless: true
+    headless: false
   });
   // create blank page
   const page = await browser.newPage();
@@ -62,17 +62,18 @@ async function bot() {
           //Matched amount check
           if (!matched_amount) console.error(`Failure: The Selector '${MATCHED_AMOUNT_SELECTOR}' could not be verifed`);
           // Grabbing first row
-          let firstRow = target.children[1].children[0].children[0].children[0].children[1].children[0].children[0].className;
+          let firstRow = target.children[1].children[0].children[0].children[0].children[1].children[0].children[0];
           // console.log(firstRow)
-          let sizeCount =  Array.from(document.querySelectorAll('.bet-button-size'));
+          let sizeCount =  Array.from(firstRow.querySelectorAll('.bet-button-size'));
           // console.log(sizeCount)
-          let priceCount = Array.from(document.querySelectorAll('.bet-button-price'));
-      // console.log(priceCount)
+          let priceCount = Array.from(firstRow.querySelectorAll('.bet-button-price'));
+
           let liquidity = [];
           let odd = [];
 
        // Adding a click listener on table
           target.addEventListener("click", async function (e) {
+            console.log(e)
             if((e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')) {
               betType = 'b0';
               liquidity.push('b0')
@@ -156,6 +157,9 @@ async function bot() {
       }
 
      }, MATCHED_AMOUNT_SELECTOR);
+
+process.exit(0)
+  // end of bot() 
 
 }
 

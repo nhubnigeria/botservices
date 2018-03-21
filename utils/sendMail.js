@@ -16,7 +16,8 @@ const
   // sgtOptions = {
 
   //   auth: {
-  //     api_key: '',
+  //     api_user: 'nanipaul',
+  //     api_pass: 'p@55w0rd!'
   //   }
   // },
   sgtOptions = {
@@ -36,10 +37,10 @@ const
 //=============================================================================
 module.exports = function (details, topic) {
   const msg = {
-    to: '',
+    to: 'ajorvictor48@gmail.com',
     from: 'report@botservice.com',
     subject: topic,
-    html: `<div><p>Hello Ajor,</p><p>${topic}</p>
+    html: `<div><p>Hello Ernest,</p><p>${topic}</p>
            <br><ul><b>${details}</b></ul>
           <p>Have a splendid day</p>
     </div>`
