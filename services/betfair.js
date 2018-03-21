@@ -8,7 +8,7 @@ const P = require('puppeteer');
 
 // module variables
 const
-  EVENT_URL = 'https://www.betfair.com/exchange/plus/horse-racing/market/1.141534601',
+  EVENT_URL = process.env.EVENT_URL,
   SELECTIONS_CONTAINER_SELECTOR = 'div.main-mv-runners-list-wrapper',
   MATCHED_AMOUNT_SELECTOR = '#main-wrapper > div > div.scrollable-panes-height-taker > div > div.page-content.nested-scrollable-pane-parent > div > div.bf-col-xxl-17-24.bf-col-xl-16-24.bf-col-lg-16-24.bf-col-md-15-24.bf-col-sm-14-24.bf-col-14-24.center-column.bfMarketSettingsSpace.bf-module-loading.nested-scrollable-pane-parent > div.scrollable-panes-height-taker.height-taker-helper > div > div.bf-row.main-mv-container > div > bf-main-market > bf-main-marketview > div > div.mv-sticky-header > bf-marketview-header-wrapper > div > div > mv-header > div > div > div.mv-secondary-section > div > div > span.total-matched';
 
@@ -36,7 +36,19 @@ async function bot() {
   timeout: 180000
   });
 
-  page.on('console', data => console.log(data.text()));
+    // Message passing back to Parent Process
+  page.on('console', data => {
+    if (data.type == 'error') {
+      // passing failure messages
+      process.stderr.write(data.text)
+    }
+    else {
+      // passing success message
+      process.stdout.write(data.text)
+    }
+  })
+
+  // page.on('console', data => console.log(data.text()));
   
   console.log('SELECTIONS_CONTAINER_SELECTOR found, continuing...');
 
