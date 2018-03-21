@@ -8,14 +8,14 @@ const P = require('puppeteer');
 
 // module variables
 const
-  EVENT_URL = 'https://matchbook.com/events/horse-racing/uk/chepstow/755878648680013/live-betting/17-05-chepstow',
+  EVENT_URL = 'https://matchbook.com/events/horse-racing/uk/kempton/755082436610014/live-betting/20-15-kempton-matchbook-betting-podcast-handicap',
   SELECTIONS_CONTAINER_SELECTOR = '#app-next > div > div.mb-app__containerChildren > div > div > div.mb-event__markets.mb-event__markets--standalone > div:nth-child(1) > div.mb-market__runners',
   MATCHED_AMOUNT_SELECTOR = '#app-next > div > div.mb-app__containerChildren > div > div > div:nth-child(1) > div > div > span:nth-child(2)';
 
 async function bot() {
   // instantiate browser
   const browser = await P.launch({
-    headless: true
+    headless: false
   });
   // create blank page
   const page = await browser.newPage();
@@ -31,24 +31,24 @@ async function bot() {
   // await page.waitFor(30000)
 
    // ensure race container selector available
-  console.log(`${SELECTIONS_CONTAINER_SELECTOR}`);
+  // console.log(`${SELECTIONS_CONTAINER_SELECTOR}`);
   const parentContainer = await page.waitForSelector(SELECTIONS_CONTAINER_SELECTOR, {
   timeout: 180000
   });
 
   // Message passing back to Parent Process
-  page.on('console', data => {
-    if (data.type == 'error') {
-      // passing failure messages
-      process.stderr.write(data.text)
-    }
-    else {
-      // passing success message
-      process.stdout.write(data.text)
-    }
-  })
+  // page.on('console', data => {
+  //   if (data.type == 'error') {
+  //     // passing failure messages
+  //     process.stderr.write(data.text())
+  //   }
+  //   else {
+  //     // passing success message
+  //     process.stdout.write(data.text())
+  //   }
+  // })
 
-  // page.on('console', data => console.log(data.text()));
+  page.on('console', data => console.log(data.text()));
   
   //console.log('SELECTIONS_CONTAINER_SELECTOR found, continuing...');
 
@@ -75,54 +75,111 @@ async function bot() {
 
           // add a click listener to the table
           target.addEventListener("click", async function (e) {
+
+             let betType,
+                  amount,
+                  odd,
+                  SELECTION;
+
+                  SELECTION = e.target.parentElement.parentElement.parentElement.children[0].innerText;
+                 
+
             console.log(e)
              if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')) {
               betType = 'b0';
-              liquidity.push('b0')
+              amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                liquidity.push('b0')
+              }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level0 ')) {
               betType = 'l0';
-             liquidity.push('l0')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                liquidity.push('l0')
+              }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')) {
               betType = 'b1';
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
               liquidity.push('b1')
+              }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level1 ')) {
               betType = 'l1';
-              liquidity.push('l1')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                liquidity.push('l1')
+              }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')) {
               betType = 'b2';
-              liquidity.push('b2')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                liquidity.push('b2')
+              }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level2 ')) {
               betType = 'l2';
-             liquidity.push('l2')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                 liquidity.push('l2')
+               }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')) {
               betType = 'b0';
-              odds.push('b0')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                odds.push('b0')
+              }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level0 ')) {
               betType = 'l0';
-              odds.push('l0')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                odds.push('l0')
+              }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')) {
               betType = 'b1';
-              odds.push('b1')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                odds.push('b1')
+              }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level1 ')) {
               betType = 'l1';
-              odds.push('l1')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                odds.push('l1')
+              }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')) {
               betType = 'b2';
-              odds.push('b2')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                odds.push('b2')
+              }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level2 ')) {
               betType = 'l2';
-              odds.push('l2')
+               amount = e.target.textContent;
+              odd = e.target.parentElement.children[0].innerText
+              if (!!betType && !!odd && !!amount && !!SELECTION) {
+                odds.push('l2')
+              }
             }
 
           }, true);
@@ -163,7 +220,7 @@ async function bot() {
 
      }, MATCHED_AMOUNT_SELECTOR);
 
-process.exit(0)
+// process.exit(0)
   // end of bot() 
 }
 
