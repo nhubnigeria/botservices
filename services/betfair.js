@@ -55,7 +55,7 @@ async function bot() {
   await page.$eval(SELECTIONS_CONTAINER_SELECTOR,
      (target, MATCHED_AMOUNT_SELECTOR) => {
 
-     // if(!target){
+      if(!target){
       console.error(`Failure: The value after evaluating '${SELECTIONS_CONTAINER_SELECTOR}' could not be verified`);
       }else{
       let matched_amount = document.querySelector(MATCHED_AMOUNT_SELECTOR)
