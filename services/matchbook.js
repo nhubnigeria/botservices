@@ -19,7 +19,7 @@ async function bot() {
   });
   // create blank page
   const page = await browser.newPage();
-  // set viewport to 1366*768#app-next > div > div.mb-app__containerChildren > div > div > div:nth-child(1) > div > div > span:nth-child(2)
+  // set viewport to 1366*768
   await page.setViewport({ width: 1366, height: 768 });
   // set the user agent
   await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)');
@@ -50,12 +50,10 @@ async function bot() {
 
   // page.on('console', data => console.log(data.text()));
   
-  console.log('SELECTIONS_CONTAINER_SELECTOR found, continuing...');
+  //console.log('SELECTIONS_CONTAINER_SELECTOR found, continuing...');
 
   await page.$eval(SELECTIONS_CONTAINER_SELECTOR,
      (target, MATCHED_AMOUNT_SELECTOR) => {
-
-      console.log(target)
 
       if(!target){
         console.error(`Failure: The value after evaluating '${SELECTIONS_CONTAINER_SELECTOR}' could not be verified`);
@@ -74,8 +72,6 @@ async function bot() {
 
           let liquidity = [];
           let odds = [];
-
-          console.log('made it');
 
           // add a click listener to the table
           target.addEventListener("click", async function (e) {
