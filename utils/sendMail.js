@@ -20,7 +20,7 @@ const
   //     api_pass: 'p@55w0rd!'
   //   }
   // },
-  // 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
+ 
   sgtOptions = {
     service: 'gmail',
     host: 'smtp.gmail.com',
