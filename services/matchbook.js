@@ -9,7 +9,7 @@ const _ = require('lodash');
 
 // module variables
 const
-  EVENT_URL = 'https://matchbook.com/events/horse-racing/755082436610014/live-betting/20-15-kempton-matchbook-betting-podcast-handicap',
+  EVENT_URL = 'https://matchbook.com/events/horse-racing/uk/chelmsford/755887749110013/17-45-chelmsford-city',
   SELECTIONS_CONTAINER_SELECTOR = '#app-next > div > div.mb-app__containerChildren > div > div > div.mb-event__markets.mb-event__markets--standalone > div:nth-child(1) > div.mb-market__runners',
   MATCHED_AMOUNT_SELECTOR = '#app-next > div > div.mb-app__containerChildren > div > div > div:nth-child(1) > div > div > span:nth-child(2)';
 
@@ -74,6 +74,8 @@ async function bot() {
           let liquidity = [];
           let odds = [];
 
+           let failure = [];
+
           // add a click listener to the table
           target.addEventListener("click", async function (e) {
 
@@ -90,98 +92,230 @@ async function bot() {
             // console.log(e)
              if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')) {
               betType = 'b0';
-              amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                liquidity.push('b0')
+                  // back
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b0',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'b0',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
               }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level0 ')) {
               betType = 'l0';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                liquidity.push('l0')
+                 // lay
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l0',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'l0',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
               }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')) {
               betType = 'b1';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-              liquidity.push('b1')
+                  // back
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b1',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'b1',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
               }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level1 ')) {
               betType = 'l1';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                liquidity.push('l1')
+                  // lay
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l1',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'l1',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
               }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')) {
               betType = 'b2';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                liquidity.push('b2')
+                  // back
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b2',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'b2',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
               }
             }
             else if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level2 ')) {
               betType = 'l2';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                 liquidity.push('l2')
-               }
+                // lay
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l2',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'l2',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
+              }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')) {
               betType = 'b0';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('b0')
+                  // back
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b0',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'b0',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
               }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level0 ')) {
               betType = 'l0';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('l0')
+                   // lay
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l0',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level0 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'l0',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level0 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
               }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')) {
               betType = 'b1';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('b1')
-              }
+                  // back
+                 if (e.target.innerText) { amount = e.target.innerText; } else {
+                  failure.push({
+                    betType: 'b1',
+                    identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')",
+                    amount: "e.target.innerText"
+                  })
+                };
+
+                if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                  failure.push({
+                    betType: 'b1',
+                    identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level1 ')",
+                    odd: "e.target.parentElement.children[0].innerText"
+                  })
+                }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level1 ')) {
               betType = 'l1';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('l1')
+                  // lay
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l1',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level1 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'l1',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level1 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
               }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')) {
               betType = 'b2';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('b2')
-              }
+                // back
+                 if (e.target.innerText) { amount = e.target.innerText; } else {
+                  failure.push({
+                    betType: 'b2',
+                    identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')",
+                    amount: "e.target.innerText"
+                  })
+                };
+
+                if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                  failure.push({
+                    betType: 'b2',
+                    identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level2 ')",
+                    odd: "e.target.parentElement.children[0].innerText"
+                  })
+                }
             }
             else if((e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level2 ')) {
               betType = 'l2';
-               amount = e.target.textContent;
-              odd = e.target.parentElement.children[0].innerText
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('l2')
+                          // lay
+               if (e.target.innerText) { amount = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l2',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level2 ')",
+                  amount: "e.target.innerText"
+                })
+              };
+
+              if (e.target.parentElement.children[0].innerText) {odd = e.target.parentElement.children[0].innerText; } else {
+                failure.push({
+                  betType: 'l2',
+                  identifier: "DOM nav for (e.target.className == 'mb-price__amount') && (e.target.parentElement.className == 'mb-price mb-price--lay  mb-price--level2 ')",
+                  odd: "e.target.parentElement.children[0].innerText"
+                })
               }
             }
 
@@ -196,25 +330,14 @@ async function bot() {
             b.click()
           });
 
-            // If array length is complete fire success
-          if (liquidity.length == 6 && odds.length == 6) {
+          // If failure array length is empty fire success
+          if(failure.length < 1){
             console.log('Success: All Selectors and Relationships are verified')
-          } else {
-              // Compare a sample complete array with what was gotten after clicks. determine which betType is not there
-            const price = _.difference(['b0', 'b1', 'b2', 'l0', 'l1', 'l2'], liquidity);
-            const stake = _.difference(['b0', 'b1', 'b2', 'l0', 'l1', 'l2'], odds);
-            // If odds and liquidity both contain filtered value, please fire
-           if (price.length > 0 && stake.length > 0) {
-             console.error(`Failure: The relationship for Odds at '${stake.toString()}' and liquidity at '${price.toString()}' could not be verified`)
-              //If only liquidity contain filtered value, please fire
-           } else if (price.length < 1 && stake.length > 0) {
-             console.error(`Failure: The relationship For Liquidity at '${price.toString()}' could not be verified`)
-              //If only odds contain filtered values, please fire 
-           } else if (price.length > 0 && stake.length < 1) {
-              console.error(`Failure: The relationship for Odd at '${stake.toString()}' could not be verified`)
-            }
+          }else{
+            console.error(failure)
           }
-          // end of else target
+        
+          //end of else for target
       }
       // end process
 

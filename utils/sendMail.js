@@ -26,7 +26,7 @@ const
     host: 'smtp.gmail.com',
     auth: {
       user: 'ajorvictor48@gmail.com',
-      pass: ''
+      pass: 'catv.345'
     }
   },
   mailer = nodemailer.createTransport(sgTransport(sgtOptions));

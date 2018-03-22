@@ -8,7 +8,7 @@ const P = require('puppeteer');
 
 // module variables
 const
-  EVENT_URL = 'https://www.betfair.com/exchange/plus/horse-racing/market/1.141581407',
+  EVENT_URL = 'https://www.betfair.com/exchange/plus/horse-racing/market/1.141581382',
   SELECTIONS_CONTAINER_SELECTOR = 'div.main-mv-runners-list-wrapper',
   MATCHED_AMOUNT_SELECTOR = '#main-wrapper > div > div.scrollable-panes-height-taker > div > div.page-content.nested-scrollable-pane-parent > div > div.bf-col-xxl-17-24.bf-col-xl-16-24.bf-col-lg-16-24.bf-col-md-15-24.bf-col-sm-14-24.bf-col-14-24.center-column.bfMarketSettingsSpace.bf-module-loading.nested-scrollable-pane-parent > div.scrollable-panes-height-taker.height-taker-helper > div > div.bf-row.main-mv-container > div > bf-main-market > bf-main-marketview > div > div.mv-sticky-header > bf-marketview-header-wrapper > div > div > mv-header > div > div > div.mv-secondary-section > div > div > span.total-matched';
 
@@ -96,7 +96,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'b0',
                   identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
@@ -115,7 +115,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'l0',
                   identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
@@ -133,7 +133,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'b1',
                   identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
@@ -151,7 +151,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'l1',
                   identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
@@ -169,7 +169,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'b2',
                   identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
@@ -187,7 +187,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'l2',
                   identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
@@ -205,7 +205,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'b0',
                   identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
@@ -223,7 +223,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'l0',
                   identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
@@ -241,7 +241,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'b1',
                   identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
@@ -259,7 +259,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'l1',
                   identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
@@ -277,7 +277,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'b2',
                   identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
@@ -295,7 +295,7 @@ async function bot() {
                   odd: "e.target.innerText"
                 })
               };
-               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+               if (e.target.parentElement.parentElement.children[0].children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
                 failure.push({
                   betType: 'l2',
                   identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
