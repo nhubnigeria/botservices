@@ -5,10 +5,11 @@
 
 // dependencies
 const P = require('puppeteer');
+const _ = require('lodash');
 
 // module variables
 const
-  EVENT_URL = 'https://matchbook.com/events/horse-racing/uk/kempton/755082436610014/live-betting/20-15-kempton-matchbook-betting-podcast-handicap',
+  EVENT_URL = 'https://matchbook.com/events/horse-racing/755082436610014/live-betting/20-15-kempton-matchbook-betting-podcast-handicap',
   SELECTIONS_CONTAINER_SELECTOR = '#app-next > div > div.mb-app__containerChildren > div > div > div.mb-event__markets.mb-event__markets--standalone > div:nth-child(1) > div.mb-market__runners',
   MATCHED_AMOUNT_SELECTOR = '#app-next > div > div.mb-app__containerChildren > div > div > div:nth-child(1) > div > div > span:nth-child(2)';
 
@@ -40,11 +41,11 @@ async function bot() {
   // page.on('console', data => {
   //   if (data.type == 'error') {
   //     // passing failure messages
-  //     process.stderr.write(data.text())
+  //     console.error(data.text())
   //   }
   //   else {
   //     // passing success message
-  //     process.stdout.write(data.text())
+  //     console.log(data.text())
   //   }
   // })
 
@@ -76,7 +77,9 @@ async function bot() {
           // add a click listener to the table
           target.addEventListener("click", async function (e) {
 
-             let betType,
+   
+
+               let betType,
                   amount,
                   odd,
                   SELECTION;
@@ -84,7 +87,7 @@ async function bot() {
                   SELECTION = e.target.parentElement.parentElement.parentElement.children[0].innerText;
                  
 
-            console.log(e)
+            // console.log(e)
              if((e.target.className == 'mb-price__odds') && (e.target.parentElement.className == 'mb-price mb-price--back  mb-price--level0 ')) {
               betType = 'b0';
               amount = e.target.textContent;
@@ -198,11 +201,8 @@ async function bot() {
             console.log('Success: All Selectors and Relationships are verified')
           } else {
               // Compare a sample complete array with what was gotten after clicks. determine which betType is not there
-            Array.prototype.diff = function (a) {
-              return this.filter(function (i) { return a.indexOf(i) < 0 })
-            };
-            const price = ['b0', 'b1', 'b2', 'l0', 'l1', 'l2'].diff(liquidity);
-            const stake = ['b0', 'b1', 'b2', 'l0', 'l1', 'l2'].diff(odds);
+            const price = _.difference(['b0', 'b1', 'b2', 'l0', 'l1', 'l2'], liquidity);
+            const stake = _.difference(['b0', 'b1', 'b2', 'l0', 'l1', 'l2'], odds);
             // If odds and liquidity both contain filtered value, please fire
            if (price.length > 0 && stake.length > 0) {
              console.error(`Failure: The relationship for Odds at '${stake.toString()}' and liquidity at '${price.toString()}' could not be verified`)

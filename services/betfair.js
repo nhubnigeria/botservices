@@ -8,7 +8,7 @@ const P = require('puppeteer');
 
 // module variables
 const
-  EVENT_URL = 'https://www.betfair.com/exchange/plus/horse-racing/market/1.141534069',
+  EVENT_URL = 'https://www.betfair.com/exchange/plus/horse-racing/market/1.141581407',
   SELECTIONS_CONTAINER_SELECTOR = 'div.main-mv-runners-list-wrapper',
   MATCHED_AMOUNT_SELECTOR = '#main-wrapper > div > div.scrollable-panes-height-taker > div > div.page-content.nested-scrollable-pane-parent > div > div.bf-col-xxl-17-24.bf-col-xl-16-24.bf-col-lg-16-24.bf-col-md-15-24.bf-col-sm-14-24.bf-col-14-24.center-column.bfMarketSettingsSpace.bf-module-loading.nested-scrollable-pane-parent > div.scrollable-panes-height-taker.height-taker-helper > div > div.bf-row.main-mv-container > div > bf-main-market > bf-main-marketview > div > div.mv-sticky-header > bf-marketview-header-wrapper > div > div > mv-header > div > div > div.mv-secondary-section > div > div > span.total-matched';
 
@@ -31,24 +31,24 @@ async function bot() {
   // await page.waitFor(30000)
 
    // ensure race container selector available
-  console.log(`${SELECTIONS_CONTAINER_SELECTOR}`);
+  // console.log(`${SELECTIONS_CONTAINER_SELECTOR}`);
   const parentContainer = await page.waitForSelector(SELECTIONS_CONTAINER_SELECTOR, {
   timeout: 180000
   });
 
     // Message passing back to Parent Process
-  // page.on('console', data => {
-  //   if (data.type == 'error') {
-  //     // passing failure messages
-  //     process.stderr.write(data.text())
-  //   }
-  //   else {
-  //     // passing success message
-  //     process.stdout.write(data.text())
-  //   }
-  // })
+     page.on('console', data => {
+      if (data.type == 'error') {
+        // passing failure messages
+        console.error(data.text())
+      }
+      else {
+        // passing success message
+        console.log(data.text())
+      }
+    })
 
-  page.on('console', data => console.log(data.text()));
+  // page.on('console', data => console.log(data.text()));
   
   //console.log('SELECTIONS_CONTAINER_SELECTOR found, continuing...');
 
@@ -70,9 +70,13 @@ async function bot() {
 
           let liquidity = [];
           let odds = [];
+          let failure = [];
 
        // Adding a click listener on table
           target.addEventListener("click", async function (e) {
+
+        //          // check for most common element of back and lay as source of event
+        // if(e.target.parentElement.parentElement.parentElement.parentElement.className == 'runner-line') {
 
             let betType,
                 amount,
@@ -84,113 +88,226 @@ async function bot() {
 
             if((e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')) {
               betType = 'b0';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                liquidity.push('b0')
+              // back
+               if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b0',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'b0',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
               
             }
             else if((e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')) {
               betType = 'l0';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-              liquidity.push('l0')
+              // lay
+              if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l0',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'l0',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
             else if((e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.nextElementSibling.className == 'bet-buttons back-cell last-back-cell')) {
               betType = 'b1';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-              liquidity.push('b1')
+              // back
+                if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b1',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'b1',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
             else if((e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.nextElementSibling.className == 'bet-buttons lay-cell first-lay-cell')) {
               betType = 'l1';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-              liquidity.push('l1')
+              // lay
+              if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l1',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'l1',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
             else if((e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.className == 'bet-buttons back-cell last-back-cell')) {
               betType = 'b2';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-              liquidity.push('b2')
+               // back
+               if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b2',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'b2',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
             else if((e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.className == 'bet-buttons lay-cell first-lay-cell')) {
               betType = 'l2';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                 liquidity.push('l2')
-               }
+               // lay
+              if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l2',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'l2',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-price') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
+              }
             }
             else if((e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')) {
               betType = 'b0';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('b0')
+               // back size
+               if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b0',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'b0',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
             else if((e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')) {
               betType = 'l0';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('l0')
+               // lay size
+              if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l0',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'l0',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
             else if((e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.nextElementSibling.className == 'bet-buttons back-cell last-back-cell')) {
               betType = 'b1';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('b1')
+               // back size
+               if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b1',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'b1',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
             else if((e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.nextElementSibling.className == 'bet-buttons lay-cell first-lay-cell')) {
               betType = 'l1';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('l1')
+               // lay size
+              if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l1',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'l1',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
             else if((e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.className == 'bet-buttons back-cell last-back-cell')) {
               betType = 'b2';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('b2')
+               // back size
+               if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'b2',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'b2',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons back-cell last-back-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
             else if((e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.className == 'bet-buttons lay-cell first-lay-cell')) {
               betType = 'l2';
-              odd = e.target.innerText;
-              amount = e.target.parentElement.parentElement.children[0].children[1].innerText;
-              // checking for validity of all
-              if (!!betType && !!odd && !!amount && !!SELECTION) {
-                odds.push('l2')
+               // lay size
+              if (e.target.innerText) { odd = e.target.innerText; } else {
+                failure.push({
+                  betType: 'l2',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  odd: "e.target.innerText"
+                })
+              };
+               if (e.target.parentElement.children[1].innerText) { amount = e.target.parentElement.parentElement.children[0].children[1].innerText; } else {
+                failure.push({
+                  betType: 'l2',
+                  identifier: "DOM nav for (e.target.className == 'bet-button-size') && (e.target.parentElement.parentElement.parentElement.className == 'bet-buttons lay-cell first-lay-cell')",
+                  amount: "e.target.parentElement.parentElement.children[0].children[1].innerText"
+                })
               }
             }
+      
+          // }else{
+       
+          // }
+
           }, true);
            // Synchronous click of all Odds  
           sizeCount.map((a) => {
@@ -200,34 +317,20 @@ async function bot() {
           priceCount.map((b) => {
             b.click()
           });
-
-            // If array length is complete fire success
-          if (liquidity.length == 6 && odd.length == 6) {
+          
+           // If failure array length is empty fire success
+          if(failure.length < 1){
             console.log('Success: All Selectors and Relationships are verified')
-          } else {
-            // Compare a sample complete array with what was gotten after clicks. determine which betType is not there
-            Array.prototype.diff = function (a) {
-              return this.filter(function (i) { return a.indexOf(i) < 0 })
-            };
-            const price = ['b0', 'b1', 'b2', 'l0', 'l1', 'l2'].diff(liquidity);
-            const stake = ['b0', 'b1', 'b2', 'l0', 'l1', 'l2'].diff(odds);
-            // If odds and liquidity both contain filtered value, please fire
-           if (price.length > 0 && stake.length > 0) {
-             console.error(`Failure: The relationship for Odds at '${stake.toString()}' and liquidity at '${price.toString()}' could not be verified`)
-              //If only liquidity contain filtered value, please fire
-           } else if (price.length < 1 && stake.length > 0) {
-             console.error(`Failure: The relationship For Liquidity at '${price.toString()}' could not be verified`)
-              //If only odds contain filtered values, please fire 
-           } else if (price.length > 0 && stake.length < 1) {
-              console.error(`Failure: The relationship for Odd at '${stake.toString()}' could not be verified`)
-            }
+          }else{
+            console.error(failure)
           }
+        
           //end of else for target
       }
 
      }, MATCHED_AMOUNT_SELECTOR);
 
-process.exit(0)
+  process.exit(0)
   // end of bot() 
 
 }

@@ -20,11 +20,12 @@ const
   //     api_pass: 'p@55w0rd!'
   //   }
   // },
+  // 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
   sgtOptions = {
     service: 'gmail',
     host: 'smtp.gmail.com',
     auth: {
-      user: '',
+      user: 'ajorvictor48@gmail.com',
       pass: ''
     }
   },
@@ -37,10 +38,10 @@ const
 //=============================================================================
 module.exports = function (details, topic) {
   const msg = {
-    to: 'ajorvictor48@gmail.com',
+    to: 'vixxjy@gmail.com',
     from: 'report@botservice.com',
     subject: topic,
-    html: `<div><p>Hello Ernest,</p><p>${topic}</p>
+    html: `<div><p>Hello Ajor,</p><p>${topic}</p>
            <br><ul><b>${details}</b></ul>
           <p>Have a splendid day</p>
     </div>`
