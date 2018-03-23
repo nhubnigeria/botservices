@@ -7,9 +7,10 @@ const P = require('puppeteer');
 
 // module variables
 const
-    EVENT_URL = process.env.EVENT_URL,
+    EVENT_URL = 'https://www.betdaq.com/exchange/horse-racing/uk-racing/wolverhampton-(22nd-march-2018)/14-10-wolverhampton/4791420',
     SELECTIONS_CONTAINER_SELECTOR = 'table.dataTable.marketViewSelections',
-    MATCHED_AMOUNT_SELECTOR = 'span.gep-matchedamount';
+    MATCHED_AMOUNT_SELECTOR = 'span.gep-matchedamount',
+    FRAME_NAME = 'mainFrame';
 
 async function bot() {
     // instantiate browser
@@ -32,7 +33,7 @@ async function bot() {
 
     await page.reload();
 
-    const frame = await page.frames().find(f => f.name() === 'mainFrame');
+    const frame = await page.frames().find(f => f.name() === FRAME_NAME);
      //checks if frame with name mainFrame is available
     if (!!frame) {
         // ensure race container selector available
@@ -43,11 +44,10 @@ async function bot() {
             process.exit(1);
         });
 
-        page.on('console', data => console.log(data.text))
+        page.on('console', data => console.log(data.text()))
         // bind to races container and lsiten for updates to , bets etc
         await frame.$eval(SELECTIONS_CONTAINER_SELECTOR,
             (target, MATCHED_AMOUNT_SELECTOR) => {
-                // listen for raceStart
                 const observer = new MutationObserver((mutations) => {
                     mutations.forEach(function (ed) {
                         const e = {
@@ -58,6 +58,7 @@ async function bot() {
                         };
                         if (e.el.parentElement.parentElement.parentElement.parentElement.className == ('marketViewSelectionRow gep-altrow' || 'marketViewSelectionRow gep-row')) {
                             // define variables
+                            console.log(e);
                             let
                                 betType,
                                 odds,
@@ -126,6 +127,8 @@ async function bot() {
                                 odds = e.el.parentElement.children[0].innerText;
                                 liquidity = e.el.innerText;
                             }
+
+                            //checks for trutiness of  data selected 
                             if (!!betType && !!odds && !!liquidity && !!SELECTION) {
                                 let timestamp = new Date();
                                 timestamp = timestamp.toISOString();
